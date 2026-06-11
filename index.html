@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arc Career Strategy</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,600&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a08;
+    --surface: #111110;
+    --border: #1e1e1a;
+    --accent: #c8f04a;
+    --accent-dim: #8aaa2a;
+    --text: #e8e4d8;
+    --muted: #6b6960;
+    --warm: #d4a84b;
+    --red: #e05a3a;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Barlow Condensed', sans-serif;
+    --sans: 'Syne', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); overflow-x: hidden; cursor: crosshair; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,8,0.88); backdrop-filter: blur(12px);
+  }
+  .nav-logo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--bg); background: var(--accent); padding: 10px 20px; border: none; cursor: pointer; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+  .nav-cta:hover { background: #b5d940; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 80px; position: relative; overflow: hidden; }
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(200,240,74,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,240,74,0.03) 1px, transparent 1px);
+    background-size: 80px 80px; pointer-events: none;
+  }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 80px 48px 80px 64px; position: relative; }
+  .hero-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+  .hero-tag::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent); }
+  .hero-h1 { font-family: var(--serif); font-size: clamp(44px, 5vw, 74px); font-weight: 600; line-height: 1.05; margin-bottom: 28px; letter-spacing: -0.01em; }
+  .hero-h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-family: var(--mono); font-size: 13px; line-height: 1.8; color: var(--muted); max-width: 400px; margin-bottom: 48px; }
+  .hero-actions { display: flex; align-items: center; gap: 24px; }
+  .btn-primary { background: var(--accent); color: var(--bg); font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 32px; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; position: relative; }
+  .btn-primary::after { content: ''; position: absolute; bottom: -4px; right: -4px; width: 100%; height: 100%; border: 1px solid var(--accent); transition: all 0.2s; pointer-events: none; }
+  .btn-primary:hover { transform: translate(-2px, -2px); }
+  .btn-primary:hover::after { bottom: -6px; right: -6px; }
+  .btn-ghost { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
+  .btn-ghost:hover { color: var(--text); }
+  .hero-right { display: flex; align-items: center; justify-content: center; padding: 80px 64px 80px 48px; }
+  .hero-stat-block { border: 1px solid var(--border); background: var(--surface); padding: 40px; width: 100%; max-width: 400px; position: relative; }
+  .hero-stat-block::before { content: 'LIVE METRICS'; position: absolute; top: -10px; left: 24px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--accent); background: var(--bg); padding: 0 8px; }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--border); }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+  .stat-value { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--accent); }
+  .stat-sub { font-family: var(--mono); font-size: 9px; color: var(--muted); display: block; margin-top: 2px; text-align: right; }
+
+  /* TICKER */
+  .ticker-wrap { overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); padding: 12px 0; }
+  .ticker { display: flex; animation: ticker 40s linear infinite; white-space: nowrap; }
+  .ticker-item { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; padding: 0 40px; display: flex; align-items: center; gap: 16px; }
+  .ticker-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); display: inline-block; flex-shrink: 0; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* SECTION COMMONS */
+  section { padding: 100px 64px; }
+  .section-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+  .section-h2 { font-family: var(--serif); font-size: clamp(32px, 3.5vw, 54px); font-weight: 600; line-height: 1.08; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .section-h2 em { font-style: normal; color: var(--accent); }
+  .section-sub { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.9; max-width: 500px; }
+
+  /* PROBLEM */
+  .problem { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-top: 64px; }
+  .problem-list { list-style: none; }
+  .problem-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .problem-num { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; flex-shrink: 0; padding-top: 2px; }
+  .problem-text { font-family: var(--mono); font-size: 12px; color: var(--text); line-height: 1.7; }
+  .problem-text strong { color: var(--accent); font-weight: 500; }
+  .ceiling-display { border: 1px solid var(--border); padding: 36px; background: var(--bg); position: relative; }
+  .ceiling-display::before { content: 'COMPENSATION CEILING ANALYSIS'; position: absolute; top: -10px; left: 24px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--muted); background: var(--surface); padding: 0 8px; }
+  .ceiling-bar { margin-bottom: 20px; }
+  .ceiling-bar-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .ceiling-role { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .ceiling-sal { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+  .ceiling-sal.low { color: var(--red); }
+  .ceiling-sal.mid { color: var(--warm); }
+  .ceiling-sal.high { color: var(--accent); }
+  .bar-track { height: 3px; background: var(--border); }
+  .bar-fill { height: 100%; }
+  .bar-fill.low { background: var(--red); width: 28%; }
+  .bar-fill.mid { background: var(--warm); width: 58%; }
+  .bar-fill.high { background: var(--accent); width: 100%; }
+
+  /* PROCESS */
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); margin-top: 56px; border: 1px solid var(--border); }
+  .step { background: var(--bg); padding: 36px 28px; position: relative; transition: background 0.3s; }
+  .step:hover { background: var(--surface); }
+  .step-num { font-family: var(--serif); font-size: 56px; font-weight: 600; color: var(--border); line-height: 1; margin-bottom: 20px; transition: color 0.3s; }
+  .step:hover .step-num { color: var(--accent); opacity: 0.3; }
+  .step-tag { display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 4px 10px; text-transform: uppercase; margin-bottom: 16px; }
+  .step-title { font-family: var(--sans); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .step-body { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.8; }
+
+  /* PIPELINE */
+  .pipeline { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .pipeline-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px; }
+  .pipe-card { background: var(--bg); padding: 28px 24px; transition: background 0.25s; }
+  .pipe-card:hover { background: var(--surface); }
+  .pipe-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .pipe-industry { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; }
+  .pipe-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .pipe-dot.active { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .pipe-transform { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 12px; }
+  .pipe-action { font-family: var(--mono); font-size: 10px; color: var(--muted); line-height: 1.7; }
+
+  /* CASES */
+  .cases { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .case-card { border: 1px solid var(--border); background: var(--bg); overflow: hidden; transition: border-color 0.3s; }
+  .case-card:hover { border-color: var(--accent-dim); }
+  .case-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .case-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+  .case-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; padding: 4px 10px; text-transform: uppercase; }
+  .case-status.completed { color: var(--warm); border: 1px solid var(--warm); }
+  .case-status.live { color: var(--accent); border: 1px solid var(--accent); }
+  .case-body { padding: 24px; }
+  .case-transform { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .case-from { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: line-through; text-decoration-color: var(--red); }
+  .arrow { color: var(--accent); font-size: 16px; }
+  .case-to { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--text); }
+  .case-metrics { display: flex; gap: 16px; margin-bottom: 20px; }
+  .metric { flex: 1; border: 1px solid var(--border); padding: 12px; text-align: center; }
+  .metric-val { font-family: var(--serif); font-size: 22px; font-weight: 600; display: block; }
+  .metric-val.positive { color: var(--accent); }
+  .metric-val.negative { color: var(--red); }
+  .metric-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-top: 4px; }
+  .case-insight { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.8; padding-top: 16px; border-top: 1px solid var(--border); }
+  .case-insight strong { color: var(--warm); font-weight: 500; }
+
+  /* DIFF */
+  .diff-content { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; align-items: start; }
+  .compare-col h3 { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .compare-col.bad h3 { color: var(--red); border-color: var(--red); opacity: 0.6; }
+  .compare-col.good h3 { color: var(--accent); border-color: var(--accent); }
+  .compare-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .compare-list li { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: flex-start; gap: 12px; line-height: 1.6; }
+  .compare-list li::before { flex-shrink: 0; padding-top: 2px; font-size: 10px; }
+  .compare-col.bad .compare-list li::before { content: '✕'; color: var(--red); opacity: 0.6; }
+  .compare-col.good .compare-list li::before { content: '→'; color: var(--accent); }
+  .compare-col.good .compare-list li { color: var(--text); }
+
+  /* AI */
+  .ai-objection { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
+  .ai-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; margin-top: 56px; align-items: start; }
+  .ai-lead { font-family: var(--serif); font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 20px; }
+  .ai-body { font-family: var(--mono); font-size: 12px; color: var(--muted); line-height: 1.9; margin-bottom: 14px; }
+  .ai-compare-block { border: 1px solid var(--border); overflow: hidden; }
+  .ai-row { display: grid; grid-template-columns: 110px 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .ai-row:last-child { border-bottom: none; }
+  .ai-row.header-row { background: var(--bg); }
+  .ai-col-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; padding: 12px 14px; border-right: 1px solid var(--border); display: flex; align-items: center; }
+  .ai-col-head { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 14px; font-weight: 500; }
+  .ai-col-head.bad-head { color: var(--red); border-right: 1px solid var(--border); }
+  .ai-col-head.good-head { color: var(--accent); }
+  .ai-col { font-family: var(--mono); font-size: 10px; color: var(--muted); padding: 13px 14px; line-height: 1.5; display: flex; align-items: center; }
+  .ai-col.bad { border-right: 1px solid var(--border); opacity: 0.7; }
+  .ai-col.good { color: var(--text); }
+
+  /* PRICING */
+  .pricing { background: var(--bg); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 56px; }
+  .plan { background: var(--bg); padding: 36px 28px; display: flex; flex-direction: column; position: relative; }
+  .plan.featured { background: var(--surface); border-top: 3px solid var(--accent); }
+  .plan-badge { position: absolute; top: -1px; right: 24px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; color: var(--bg); background: var(--accent); padding: 4px 10px; text-transform: uppercase; }
+  .plan-name { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 16px; }
+  .plan-price { font-family: var(--serif); font-size: 44px; font-weight: 600; color: var(--text); line-height: 1; margin-bottom: 4px; }
+  .plan-price span { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--muted); vertical-align: middle; }
+  .plan-period { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 28px; }
+  .plan-features { list-style: none; flex: 1; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .plan-features li { font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; }
+  .plan-features li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+  .plan.featured .plan-features li { color: var(--text); }
+  .plan-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px; border: 1px solid var(--border); background: none; color: var(--muted); cursor: pointer; transition: all 0.2s; text-align: center; text-decoration: none; display: block; }
+  .plan-btn:hover { border-color: var(--text); color: var(--text); }
+  .plan.featured .plan-btn { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .plan.featured .plan-btn:hover { background: #b5d940; }
+
+  /* CTA */
+  .cta-section { min-height: 45vh; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; padding: 100px 64px; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(200,240,74,0.06) 0%, transparent 70%); pointer-events: none; }
+  .cta-section .section-h2 { font-size: clamp(34px, 4.5vw, 60px); max-width: 640px; margin-bottom: 16px; }
+  .cta-section .section-sub { text-align: center; margin: 0 auto 40px; }
+  .cta-note { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--muted); margin-top: 20px; text-transform: uppercase; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 28px 64px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-logo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+  .footer-note { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-tag { animation: fadeUp 0.5s ease forwards; }
+  .hero-h1 { animation: fadeUp 0.5s 0.1s ease forwards; opacity: 0; }
+  .hero-sub { animation: fadeUp 0.5s 0.2s ease forwards; opacity: 0; }
+  .hero-actions { animation: fadeUp 0.5s 0.3s ease forwards; opacity: 0; }
+  .hero-stat-block { animation: fadeUp 0.5s 0.35s ease forwards; opacity: 0; }
+  .blink { display: inline-block; width: 2px; height: 1em; background: var(--accent); vertical-align: text-bottom; animation: blink 1s step-end infinite; margin-left: 4px; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* RESPONSIVE */
+  @media (max-width: 1100px) {
+    .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 64px 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 100px 24px 40px; }
+    .hero-right { padding: 0 24px 60px; }
+    .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .pipeline-grid { grid-template-columns: 1fr 1fr; }
+    .cases-grid { grid-template-columns: 1fr; }
+    .diff-content { grid-template-columns: 1fr; gap: 40px; }
+    .ai-grid { grid-template-columns: 1fr; gap: 40px; }
+    .ai-row { grid-template-columns: 90px 1fr 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Arc Career Strategy</div>
+  <ul class="nav-links">
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#cases">Cases</a></li>
+    <li><a href="#services">Services</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Diagnostic</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-left">
+    <div class="hero-tag">Career Strategy &amp; Opportunity Analysis</div>
+    <h1 class="hero-h1">Your Skills Are Worth <em>More Than This.</em><span class="blink"></span></h1>
+    <p class="hero-sub">You already know you're underpaid for what you bring. We turn that into a plan — bottleneck identified, market repositioned, highest-probability path forward.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Diagnostic</a>
+      <a href="#pipeline" class="btn-ghost">See Active Work →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-block">
+      <div class="stat-row">
+        <div><div class="stat-label">Avg. Salary Increase</div><span class="stat-sub">across completed transitions</span></div>
+        <div><div class="stat-value">+68%</div></div>
+      </div>
+      <div class="stat-row">
+        <div><div class="stat-label">Bottleneck Identified</div><span class="stat-sub">first session, documented</span></div>
+        <div><div class="stat-value">1 hr</div></div>
+      </div>
+      <div class="stat-row">
+        <div><div class="stat-label">Active Clients</div><span class="stat-sub">across 11 industries simultaneously</span></div>
+        <div><div class="stat-value">10+</div></div>
+      </div>
+      <div class="stat-row">
+        <div><div class="stat-label">Positioning Gap</div><span class="stat-sub">same skills, different market</span></div>
+        <div><div class="stat-value">2.2×</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <div class="ticker-item"><span class="dot"></span> Student Affairs → Recruiting Operations</div>
+    <div class="ticker-item"><span class="dot"></span> ME Graduate → Process / Lab Engineer</div>
+    <div class="ticker-item"><span class="dot"></span> PC Build Business → Field Applications Specialist (FAE Track)</div>
+    <div class="ticker-item"><span class="dot"></span> IAC Intern ($20/hr) → Field Service Engineer at Thermo Fisher ($40/hr)</div>
+    <div class="ticker-item"><span class="dot"></span> Civil Engineering → Datacenter Construction</div>
+    <div class="ticker-item"><span class="dot"></span> BioEng MS → Upstream / Downstream Engineering</div>
+    <div class="ticker-item"><span class="dot"></span> Finance Junior → Real Estate IB</div>
+    <div class="ticker-item"><span class="dot"></span> Criminology → Forensic Lab Scientist</div>
+    <div class="ticker-item"><span class="dot"></span> Content Creator → Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Freelance Designer → Brand Studio</div>
+    <div class="ticker-item"><span class="dot"></span> Student Affairs → Recruiting Operations</div>
+    <div class="ticker-item"><span class="dot"></span> ME Graduate → Process / Lab Engineer</div>
+    <div class="ticker-item"><span class="dot"></span> PC Build Business → Field Applications Specialist (FAE Track)</div>
+    <div class="ticker-item"><span class="dot"></span> IAC Intern ($20/hr) → Field Service Engineer at Thermo Fisher ($40/hr)</div>
+    <div class="ticker-item"><span class="dot"></span> Civil Engineering → Datacenter Construction</div>
+    <div class="ticker-item"><span class="dot"></span> BioEng MS → Upstream / Downstream Engineering</div>
+    <div class="ticker-item"><span class="dot"></span> Finance Junior → Real Estate IB</div>
+    <div class="ticker-item"><span class="dot"></span> Criminology → Forensic Lab Scientist</div>
+    <div class="ticker-item"><span class="dot"></span> Content Creator → Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Freelance Designer → Brand Studio</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="section-label">The Problem</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;">
+    <h2 class="section-h2">Stuck at the <em>Wrong Ceiling</em></h2>
+    <p class="section-sub">Same skills. Different market. 2× the pay. Most people never find the gap — they just apply harder.</p>
+  </div>
+  <div class="problem-grid">
+    <ul class="problem-list">
+      <li class="problem-item">
+        <span class="problem-num">01</span>
+        <span class="problem-text"><strong>Wrong industry.</strong> Same skills pay 2× elsewhere. You haven't mapped it.</span>
+      </li>
+      <li class="problem-item">
+        <span class="problem-num">02</span>
+        <span class="problem-text"><strong>Resume faces backward.</strong> Written for where you've been, not where you're going.</span>
+      </li>
+      <li class="problem-item">
+        <span class="problem-num">03</span>
+        <span class="problem-text"><strong>60% fit applications.</strong> The 85%+ matches are in adjacent markets you haven't found.</span>
+      </li>
+      <li class="problem-item">
+        <span class="problem-num">04</span>
+        <span class="problem-text"><strong>Skills are invisible.</strong> Without reframing, they don't land in the target market.</span>
+      </li>
+    </ul>
+    <div class="ceiling-display">
+      <div class="ceiling-bar">
+        <div class="ceiling-bar-label"><span class="ceiling-role">Student Affairs / Higher Ed</span><span class="ceiling-sal low">$55–72K</span></div>
+        <div class="bar-track"><div class="bar-fill low"></div></div>
+      </div>
+      <div class="ceiling-bar">
+        <div class="ceiling-bar-label"><span class="ceiling-role">Recruiting Operations</span><span class="ceiling-sal mid">$90–120K</span></div>
+        <div class="bar-track"><div class="bar-fill mid"></div></div>
+      </div>
+      <div class="ceiling-bar">
+        <div class="ceiling-bar-label"><span class="ceiling-role">Recruiting Ops (Tech)</span><span class="ceiling-sal high">$120–160K</span></div>
+        <div class="bar-track"><div class="bar-fill high"></div></div>
+      </div>
+      <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border);">
+        <p style="font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.8;">
+          Same candidate. Same hours.<br><span style="color:var(--accent);">2.2× salary gap</span> driven purely by positioning.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-h2">Four Steps. <em>One Outcome.</em></h2>
+  <div class="process-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-tag">Diagnostic</div>
+      <div class="step-title">Find the Bottleneck</div>
+      <div class="step-body">Experience, skills, salary, goals. One session. One clear constraint identified.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-tag">Analysis</div>
+      <div class="step-title">Map the Opportunity</div>
+      <div class="step-body">Adjacent markets, compensation ranges, probability estimates per path. Data over gut feel.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-tag">Positioning</div>
+      <div class="step-title">Reframe Everything</div>
+      <div class="step-body">Resume, LinkedIn, narrative. Rebuilt for the target market, not your last job.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-tag">Execution</div>
+      <div class="step-title">Ranked Action Plan</div>
+      <div class="step-body">Specific companies, salary targets, outreach strategy — prioritized by probability.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="pipeline" id="pipeline">
+  <div class="section-label">Active Work</div>
+  <h2 class="section-h2">Currently <em>In Progress</em></h2>
+  <p class="section-sub">8 industries. 10+ people. Running simultaneously. Breadth is the edge — cross-sector pattern recognition a specialist can't offer.</p>
+  <div class="pipeline-grid">
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">California State Government</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Office Technician → Staff Services Analyst I (Internal Promotion)</div>
+      <div class="pipe-action">Unique case: CalPERS pension math made leaving a losing trade. Resume rebuilt for civil service. Analyst I exam roadmap + target departments identified. Bilingual pay differential surfaced as primary filter-beater.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Performance Marketing</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Social Media / Content Creator → Performance Marketing & Growth</div>
+      <div class="pipe-action">Repositioned from content creator to ROI-driven marketer. Running live Google + Meta campaigns via DeParts Systems to build paid media portfolio and documented conversion metrics.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Forensic Science</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Criminology Major → CSI / Forensic Lab Scientist</div>
+      <div class="pipe-action">Identified major label mismatch — general criminology capped pay and opportunities. Retargeted to lab-track forensics aligned with actual interests and higher ceiling.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Investment Banking</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Finance Junior → Real Estate IB / Summer Analyst</div>
+      <div class="pipe-action">Warm LinkedIn intro secured to target firm. Analyst pipeline active.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Semiconductor / Medtech</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">ME Graduate (No Internships) → Process / Lab Engineer</div>
+      <div class="pipe-action">ATS resume built. Warm referral path at Intuitive Surgical. Lam / KLA / Nevro targeted.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Datacenter Construction</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Civil Engineering BS → Datacenter Construction PM</div>
+      <div class="pipe-action">Role fit analysis complete. Target company list in development.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Biotech / Biopharma</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">BioEng MS + BS → Upstream / Downstream Process Engineering</div>
+      <div class="pipe-action">Credential mapping complete. Field Applications Specialist identified as parallel path.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Corporate Finance</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Operations Background → FP&amp;A Analyst</div>
+      <div class="pipe-action">Skill gap analysis underway. Target role shortlist being built.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Creative / Brand</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Freelance Designer (Music Industry) → Professional Brand Studio</div>
+      <div class="pipe-action">Portfolio site built. Revenue model structured. Moving from informal gigs to retainer contracts.</div>
+    </div>
+    <div class="pipe-card">
+      <div class="pipe-header"><span class="pipe-industry">Higher Ed → Corporate</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Student Affairs Admin ($62K) → Recruiting Operations ($110K+)</div>
+      <div class="pipe-action">Resume repositioned. ATS optimized. Corporate TA targeting active.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="cases" id="cases">
+  <div class="section-label">Completed</div>
+  <h2 class="section-h2">Closed <em>Case Studies</em></h2>
+  <p class="section-sub">Real numbers. No fluff.</p>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-tag">Case 01 — Hardware / Tech</span>
+        <span class="case-status completed">Completed</span>
+      </div>
+      <div class="case-body">
+        <div class="case-transform">
+          <span class="case-from">PC Build Business</span>
+          <span class="arrow">→</span>
+          <span class="case-to">Field Applications Specialist → FAE</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val negative">~$40K</span><span class="metric-lbl">Prior Income</span></div>
+          <div class="metric"><span class="metric-val positive">$80K</span><span class="metric-lbl">Starting Offer</span></div>
+          <div class="metric"><span class="metric-val positive">2×</span><span class="metric-lbl">Income</span></div>
+        </div>
+        <div class="case-insight">
+          <strong>Bottleneck:</strong> GPU/compute validation experience invisible inside an informal business. No titled industry roles, ATS rejection guaranteed.<br><br>
+          <strong>Fix:</strong> Reframe client builds as field applications work. Hardware-first narrative. Full-time FAS offer in under 12 months — with 6-month performance bonus, formal FAE title review, and pay bump structured into the offer.
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-tag">Case 02 — Higher Ed → Corporate</span>
+        <span class="case-status live">In Progress</span>
+      </div>
+      <div class="case-body">
+        <div class="case-transform">
+          <span class="case-from">Student Affairs Admin</span>
+          <span class="arrow">→</span>
+          <span class="case-to">Recruiting Operations</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val negative">$62K</span><span class="metric-lbl">Current Salary</span></div>
+          <div class="metric"><span class="metric-val positive">$110K+</span><span class="metric-lbl">Target</span></div>
+          <div class="metric"><span class="metric-val positive">+77%</span><span class="metric-lbl">Projected Lift</span></div>
+        </div>
+        <div class="case-insight">
+          <strong>Bottleneck:</strong> 700+ applicant pipelines, $300K budget ownership, vendor management buried under higher-ed titles.<br><br>
+          <strong>Fix:</strong> Repositioned as recruiting ops. Narrative rebuilt for corporate TA. Actively applying.
+        </div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-header">
+        <span class="case-tag">Case 03 — Engineering / Scientific</span>
+        <span class="case-status completed">Completed</span>
+      </div>
+      <div class="case-body">
+        <div class="case-transform">
+          <span class="case-from">IAC Intern ($20/hr)</span>
+          <span class="arrow">→</span>
+          <span class="case-to">Field Service Engineer, Thermo Fisher</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val negative">$20/hr</span><span class="metric-lbl">Starting Rate</span></div>
+          <div class="metric"><span class="metric-val positive">$40/hr</span><span class="metric-lbl">New Rate</span></div>
+          <div class="metric"><span class="metric-val positive">2×</span><span class="metric-lbl">Income</span></div>
+        </div>
+        <div class="case-insight">
+          <strong>Bottleneck:</strong> Strong IAC energy audit experience undersold on resume. No portfolio to demonstrate hands-on technical depth to hiring managers.<br><br>
+          <strong>Fix:</strong> Resume repositioned to surface field engineering competencies. Portfolio built after seeing the same approach land interviews. Thermo Fisher FSE offer followed.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="diff" id="about">
+  <div class="section-label">The Edge</div>
+  <h2 class="section-h2">Cross-Industry Pattern Recognition. <em>Not a Niche Coach.</em></h2>
+  <p class="section-sub" style="margin-bottom:48px;">Running IB, biotech, semiconductor, energy, and creative simultaneously — and extracting patterns specialists miss.</p>
+  <div class="diff-content">
+    <div class="compare-col bad">
+      <h3>Generic Career Coaching</h3>
+      <ul class="compare-list">
+        <li>"Update your LinkedIn" with no specifics</li>
+        <li>Resume polish, not structural repositioning</li>
+        <li>Interview prep that doesn't fix the root problem</li>
+        <li>No compensation ceiling analysis</li>
+        <li>No probability estimates on paths</li>
+      </ul>
+    </div>
+    <div class="compare-col good">
+      <h3>This Service</h3>
+      <ul class="compare-list">
+        <li>Exact bottleneck identified, not symptoms treated</li>
+        <li>Compensation ceiling mapped across industries</li>
+        <li>Skills reframed for the target market specifically</li>
+        <li>Probability estimates before you invest time</li>
+        <li>Ranked execution plan with named companies</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- AI -->
+<section class="ai-objection">
+  <div class="section-label">The Obvious Question</div>
+  <h2 class="section-h2">Why Not Just Use <em>ChatGPT?</em></h2>
+  <div class="ai-grid">
+    <div class="ai-left">
+      <p class="ai-lead">Most people already have. They're still stuck.</p>
+      <p class="ai-body">They got a list of options, a rewritten resume, and a plan that sounded right. The problem wasn't the output — it was that AI had no real context about their situation, and no one to make the actual call on which direction to commit to.</p>
+      <p class="ai-body">AI without depth of context just produces better-looking confusion. Most people don't know what to feed in, which threads to pull, or when the answer is confidently wrong.</p>
+      <p class="ai-body">AI runs throughout every engagement here. The value is in what goes in and the judgment applied to what comes out.</p>
+    </div>
+    <div class="ai-right">
+      <div class="ai-compare-block">
+        <div class="ai-row header-row">
+          <span class="ai-col-label"></span>
+          <span class="ai-col-head bad-head">AI Alone</span>
+          <span class="ai-col-head good-head">AI + Human Judgment</span>
+        </div>
+        <div class="ai-row">
+          <span class="ai-col-label">Output</span>
+          <span class="ai-col bad">Generates possibilities</span>
+          <span class="ai-col good">Chooses a direction and commits</span>
+        </div>
+        <div class="ai-row">
+          <span class="ai-col-label">Context</span>
+          <span class="ai-col bad">What you remember to mention</span>
+          <span class="ai-col good">Deep extraction: history, risk tolerance, goals, constraints</span>
+        </div>
+        <div class="ai-row">
+          <span class="ai-col-label">Analysis</span>
+          <span class="ai-col bad">Finds patterns</span>
+          <span class="ai-col good">Applies market context to patterns</span>
+        </div>
+        <div class="ai-row">
+          <span class="ai-col-label">Output quality</span>
+          <span class="ai-col bad">As good as your prompt</span>
+          <span class="ai-col good">Iterative — refined across multiple sessions</span>
+        </div>
+        <div class="ai-row">
+          <span class="ai-col-label">Accountability</span>
+          <span class="ai-col bad">New chat, no follow-through</span>
+          <span class="ai-col good">One owner on the execution</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="services">
+  <div class="section-label">Services</div>
+  <h2 class="section-h2">Ready to Start <em>Jobmaxxing?</em></h2>
+  <p class="section-sub">Pick your entry point.</p>
+  <div class="pricing-grid">
+    <div class="plan">
+      <div class="plan-name">Career Diagnostic</div>
+      <div class="plan-price">$250 <span>flat</span></div>
+      <div class="plan-period">One session</div>
+      <ul class="plan-features">
+        <li>60-90 min strategy session</li>
+        <li>Written bottleneck analysis</li>
+        <li>Top 3 path recommendations</li>
+        <li>Compensation ceiling breakdown</li>
+        <li>Transferable skill map</li>
+      </ul>
+      <a href="#contact" class="plan-btn">Book Diagnostic</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Positioning Package</div>
+      <div class="plan-price">$750 <span>flat</span></div>
+      <div class="plan-period">Full repositioning</div>
+      <ul class="plan-features">
+        <li>Everything in Diagnostic</li>
+        <li>Resume structural rewrite</li>
+        <li>LinkedIn optimization</li>
+        <li>Target role + company list</li>
+        <li>Application priority ranking</li>
+        <li>One revision round</li>
+      </ul>
+      <a href="#contact" class="plan-btn">Get Positioned</a>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Full Strategy Engagement</div>
+      <div class="plan-price">$1,500 <span>flat</span></div>
+      <div class="plan-period">End-to-end</div>
+      <ul class="plan-features">
+        <li>Everything in Positioning</li>
+        <li>Networking outreach strategy</li>
+        <li>Interview positioning</li>
+        <li>Offer negotiation framework</li>
+        <li>30-day async support</li>
+      </ul>
+      <a href="#contact" class="plan-btn">Full Engagement</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="section-label" style="justify-content:center;">Get Started</div>
+  <h2 class="section-h2">What's the <em>Highest-Leverage</em> Move Right Now?</h2>
+  <p class="section-sub">You don't have a work ethic problem. You have a positioning problem. Most clients leave the first session with a dramatically different view of their options.</p>
+  <a href="mailto:hello@apexcareerstrategy.com" class="btn-primary">Book a Diagnostic</a>
+  <div class="cta-note">60-90 min · Written analysis included · No fluff</div>
+</section>
+
+<footer>
+  <div class="footer-logo">Arc Career Strategy</div>
+  <div class="footer-note">Career strategy · Opportunity analysis · Execution planning</div>
+</footer>
+
+</body>
+</html>
