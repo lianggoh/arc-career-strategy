@@ -137,7 +137,7 @@
 
   /* CASES */
   .cases { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 56px; }
   .case-card { border: 1px solid var(--border); background: var(--bg); overflow: hidden; transition: border-color 0.3s; }
   .case-card:hover { border-color: var(--accent-dim); }
   .case-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
@@ -219,7 +219,30 @@
   .footer-logo { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
   .footer-note { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
 
-  /* ANIMATIONS */
+  /* EVOLUTION */
+  .evolution { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg); }
+  .evolution-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 56px; }
+  .evo-card { border: 1px solid var(--border); background: var(--surface); overflow: hidden; transition: border-color 0.3s; position: relative; }
+  .evo-card:hover { border-color: var(--accent-dim); }
+  .evo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+  .evo-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .evo-tag { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+  .evo-status { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; padding: 4px 10px; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); }
+  .evo-body { padding: 24px; }
+  .evo-transform { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .evo-from { font-family: var(--sans); font-size: 13px; font-weight: 600; color: var(--muted); text-decoration: line-through; text-decoration-color: var(--red); }
+  .evo-to { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--text); }
+  .evo-milestones { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .evo-milestone { display: flex; align-items: flex-start; gap: 12px; font-family: var(--mono); font-size: 10px; color: var(--muted); line-height: 1.6; }
+  .evo-milestone::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 6px var(--accent); animation: pulse 2s ease-in-out infinite; }
+  .evo-milestone.done { color: var(--text); }
+  .evo-milestone.done::before { background: var(--warm); box-shadow: none; animation: none; }
+  .evo-milestone.pending::before { background: transparent; border: 1px solid var(--muted); box-shadow: none; animation: none; }
+  .evo-insight { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.8; padding-top: 16px; border-top: 1px solid var(--border); }
+  .evo-insight strong { color: var(--warm); font-weight: 500; }
+  @media (max-width: 900px) { .evolution-grid { grid-template-columns: 1fr; } }
+
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .hero-tag { animation: fadeUp 0.5s ease forwards; }
   .hero-h1 { animation: fadeUp 0.5s 0.1s ease forwards; opacity: 0; }
@@ -259,6 +282,7 @@
   <ul class="nav-links">
     <li><a href="#process">Process</a></li>
     <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#evolution">Evolution</a></li>
     <li><a href="#cases">Cases</a></li>
     <li><a href="#services">Services</a></li>
   </ul>
@@ -270,8 +294,8 @@
   <div class="hero-grid-lines"></div>
   <div class="hero-left">
     <div class="hero-tag">Career Strategy &amp; Opportunity Analysis</div>
-    <h1 class="hero-h1">Your Skills Are Worth <em>More Than This.</em><span class="blink"></span></h1>
-    <p class="hero-sub">You already know you're underpaid for what you bring. We turn that into a plan — bottleneck identified, market repositioned, highest-probability path forward.</p>
+    <h1 class="hero-h1">Your Skills Are <em>Worth More.</em><span class="blink"></span></h1>
+    <p class="hero-sub">You already know you're underpaid for what you bring. One session to find the gap. A plan to close it.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Book a Diagnostic</a>
       <a href="#pipeline" class="btn-ghost">See Active Work →</a>
@@ -281,15 +305,15 @@
     <div class="hero-stat-block">
       <div class="stat-row">
         <div><div class="stat-label">Avg. Salary Increase</div><span class="stat-sub">across completed transitions</span></div>
-        <div><div class="stat-value">+68%</div></div>
+        <div><div class="stat-value">+100%</div></div>
       </div>
       <div class="stat-row">
         <div><div class="stat-label">Bottleneck Identified</div><span class="stat-sub">first session, documented</span></div>
         <div><div class="stat-value">1 hr</div></div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-label">Active Clients</div><span class="stat-sub">across 11 industries simultaneously</span></div>
-        <div><div class="stat-value">10+</div></div>
+        <div><div class="stat-label">Clients</div><span class="stat-sub">across 13 industries</span></div>
+        <div><div class="stat-value">13+</div></div>
       </div>
       <div class="stat-row">
         <div><div class="stat-label">Positioning Gap</div><span class="stat-sub">same skills, different market</span></div>
@@ -309,8 +333,10 @@
     <div class="ticker-item"><span class="dot"></span> Civil Engineering → Datacenter Construction</div>
     <div class="ticker-item"><span class="dot"></span> BioEng MS → Upstream / Downstream Engineering</div>
     <div class="ticker-item"><span class="dot"></span> Finance Junior → Real Estate IB</div>
-    <div class="ticker-item"><span class="dot"></span> Criminology → Forensic Lab Scientist</div>
-    <div class="ticker-item"><span class="dot"></span> Content Creator → Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Babysitter → Sworn LE Officer / Forensic Lab Analyst</div>
+    <div class="ticker-item"><span class="dot"></span> Content Creator → Paid Social & Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Filipino Marketing Student → US Growth Marketing Contractor</div>
+    <div class="ticker-item"><span class="dot"></span> High School Graduate → FP&amp;A Analyst</div>
     <div class="ticker-item"><span class="dot"></span> Freelance Designer → Brand Studio</div>
     <div class="ticker-item"><span class="dot"></span> Student Affairs → Recruiting Operations</div>
     <div class="ticker-item"><span class="dot"></span> ME Graduate → Process / Lab Engineer</div>
@@ -319,8 +345,10 @@
     <div class="ticker-item"><span class="dot"></span> Civil Engineering → Datacenter Construction</div>
     <div class="ticker-item"><span class="dot"></span> BioEng MS → Upstream / Downstream Engineering</div>
     <div class="ticker-item"><span class="dot"></span> Finance Junior → Real Estate IB</div>
-    <div class="ticker-item"><span class="dot"></span> Criminology → Forensic Lab Scientist</div>
-    <div class="ticker-item"><span class="dot"></span> Content Creator → Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Babysitter → Sworn LE Officer / Forensic Lab Analyst</div>
+    <div class="ticker-item"><span class="dot"></span> Content Creator → Paid Social & Performance Marketing</div>
+    <div class="ticker-item"><span class="dot"></span> Filipino Marketing Student → US Growth Marketing Contractor</div>
+    <div class="ticker-item"><span class="dot"></span> High School Graduate → FP&amp;A Analyst</div>
     <div class="ticker-item"><span class="dot"></span> Freelance Designer → Brand Studio</div>
   </div>
 </div>
@@ -409,22 +437,17 @@
 <section class="pipeline" id="pipeline">
   <div class="section-label">Active Work</div>
   <h2 class="section-h2">Currently <em>In Progress</em></h2>
-  <p class="section-sub">8 industries. 10+ people. Running simultaneously. Breadth is the edge — cross-sector pattern recognition a specialist can't offer.</p>
+  <p class="section-sub">12 industries. 13+ people. Active and closed.</p>
   <div class="pipeline-grid">
     <div class="pipe-card">
-      <div class="pipe-header"><span class="pipe-industry">California State Government</span><span class="pipe-dot active"></span></div>
-      <div class="pipe-transform">Office Technician → Staff Services Analyst I (Internal Promotion)</div>
-      <div class="pipe-action">Unique case: CalPERS pension math made leaving a losing trade. Resume rebuilt for civil service. Analyst I exam roadmap + target departments identified. Bilingual pay differential surfaced as primary filter-beater.</div>
+      <div class="pipe-header"><span class="pipe-industry">Paid Social Marketing</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Content Creator → Paid Social Marketer (Meta Ads)</div>
+      <div class="pipe-action">Repositioned from organic content to paid social execution. Running live Meta Ads campaigns via DeParts Systems. Building documented conversion metrics and paid social portfolio as proof of hands-on execution.</div>
     </div>
     <div class="pipe-card">
-      <div class="pipe-header"><span class="pipe-industry">Performance Marketing</span><span class="pipe-dot active"></span></div>
-      <div class="pipe-transform">Social Media / Content Creator → Performance Marketing & Growth</div>
-      <div class="pipe-action">Repositioned from content creator to ROI-driven marketer. Running live Google + Meta campaigns via DeParts Systems to build paid media portfolio and documented conversion metrics.</div>
-    </div>
-    <div class="pipe-card">
-      <div class="pipe-header"><span class="pipe-industry">Forensic Science</span><span class="pipe-dot active"></span></div>
-      <div class="pipe-transform">Criminology Major → CSI / Forensic Lab Scientist</div>
-      <div class="pipe-action">Identified major label mismatch — general criminology capped pay and opportunities. Retargeted to lab-track forensics aligned with actual interests and higher ceiling.</div>
+      <div class="pipe-header"><span class="pipe-industry">Forensic Science / Law Enforcement</span><span class="pipe-dot active"></span></div>
+      <div class="pipe-transform">Babysitter / Late HS Graduate → Sworn LE Officer (CSI Track) or Forensic Science Major → Lab Analyst</div>
+      <div class="pipe-action">Dual-track plan: sworn LE primary with internal CSI transition, civilian forensic lab analyst as fallback. Applying GGC and UNG Fall 2026, transferring to Albany State (FEPAC-accredited).</div>
     </div>
     <div class="pipe-card">
       <div class="pipe-header"><span class="pipe-industry">Investment Banking</span><span class="pipe-dot active"></span></div>
@@ -448,8 +471,8 @@
     </div>
     <div class="pipe-card">
       <div class="pipe-header"><span class="pipe-industry">Corporate Finance</span><span class="pipe-dot active"></span></div>
-      <div class="pipe-transform">Operations Background → FP&amp;A Analyst</div>
-      <div class="pipe-action">Skill gap analysis underway. Target role shortlist being built.</div>
+      <div class="pipe-transform">High School Graduate → FP&amp;A Analyst (Finance Career Prep)</div>
+      <div class="pipe-action">Community college to UC transfer roadmap built. Goldman/JPM scoped as Year 3-4 UC targets. Credential sequence mapped across 4 years.</div>
     </div>
     <div class="pipe-card">
       <div class="pipe-header"><span class="pipe-industry">Creative / Brand</span><span class="pipe-dot active"></span></div>
@@ -461,6 +484,80 @@
       <div class="pipe-transform">Student Affairs Admin ($62K) → Recruiting Operations ($110K+)</div>
       <div class="pipe-action">Resume repositioned. ATS optimized. Corporate TA targeting active.</div>
     </div>
+  </div>
+</section>
+
+<!-- EVOLUTION -->
+<section class="evolution" id="evolution">
+  <div class="section-label">Active Evolution</div>
+  <h2 class="section-h2">In Motion. <em>Right Now.</em></h2>
+  <p class="section-sub">Not just strategy -- execution. These cases are past diagnosis and actively building toward the outcome.</p>
+  <div class="evolution-grid">
+
+    <!-- EDITH ORTIZ -->
+    <div class="evo-card">
+      <div class="evo-header">
+        <span class="evo-tag">California State Government / Internal Promotion</span>
+        <span class="evo-status">Executing</span>
+      </div>
+      <div class="evo-body">
+        <div class="evo-transform">
+          <span class="evo-from">Office Technician — 15 yrs ($45-50K)</span>
+          <span class="arrow">→</span>
+          <span class="evo-to">Staff Services Analyst I ($62-78K)</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val negative">$45-50K</span><span class="metric-lbl">Current</span></div>
+          <div class="metric"><span class="metric-val positive">$62-78K</span><span class="metric-lbl">Analyst I Target</span></div>
+          <div class="metric"><span class="metric-val positive">$78-96K</span><span class="metric-lbl">Analyst II Ceiling</span></div>
+        </div>
+        <div class="evo-milestones">
+          <div class="evo-milestone done">CalPERS pension math run -- leaving confirmed as a losing trade. Strategy locked to internal promotion.</div>
+          <div class="evo-milestone done">LEAP certification active since March 2025. Bypasses standard exam entirely -- DOR certification was the credential.</div>
+          <div class="evo-milestone done">LEAP Analyst I eligibility established June 13 2026. On the list. No test required.</div>
+          <div class="evo-milestone done">Resume finalized. Spanish L2 OPI certification, bilingual pay differential, and 25+ years state service surfaced as primary differentiators.</div>
+          <div class="evo-milestone done">Standard Analyst I exam (EX-04774) submitted as parallel pathway.</div>
+          <div class="evo-milestone">Applying to DSS Rohnert Park, DOR different district, DHCS, and DFPI simultaneously.</div>
+          <div class="evo-milestone pending">Analyst I appointment and 18-month range progression to Analyst II ($78-96K ceiling).</div>
+        </div>
+        <div class="evo-insight">
+          <strong>Edge:</strong> Bilingual pay differential and LEAP hiring pathway put her in a structurally smaller applicant pool. Most candidates compete on the standard exam. She is already on the eligible list.
+        </div>
+      </div>
+    </div>
+
+    <!-- JESUS DELOS REYES -->
+    <div class="evo-card">
+      <div class="evo-header">
+        <span class="evo-tag">Growth Marketing / International Contractor</span>
+        <span class="evo-status">Executing</span>
+      </div>
+      <div class="evo-body">
+        <div class="evo-transform">
+          <span class="evo-from">Filipino Marketing Student ($0 US presence)</span>
+          <span class="arrow">→</span>
+          <span class="evo-to">US Growth Marketing Contractor</span>
+        </div>
+        <div class="case-metrics">
+          <div class="metric"><span class="metric-val negative">$300-500</span><span class="metric-lbl">Local Ceiling</span></div>
+          <div class="metric"><span class="metric-val positive">$1K-2.1K</span><span class="metric-lbl">Current to US Entry</span></div>
+          <div class="metric"><span class="metric-val positive">$2.5-3.5K</span><span class="metric-lbl">Sr. US Contractor</span></div>
+        </div>
+        <div class="evo-milestones">
+          <div class="evo-milestone done">Starting point: no LinkedIn, no resume, no US contacts, no documented professional history.</div>
+          <div class="evo-milestone done">Hidden asset identified: 1,176,000+ member global audience across four communities, $20-30K ad spend managed, 21,000+ transactions -- none professionally documented.</div>
+          <div class="evo-milestone done">Resume built. PetMart founder credential and community scale reframed as growth marketing proof of execution.</div>
+          <div class="evo-milestone done">Contractor agreement signed with DeParts Systems (Bay Area, CA). First US client.</div>
+          <div class="evo-milestone done">Google Ads, GA4, and Search Console access provisioned. Live campaigns running on $1,000+ budget.</div>
+          <div class="evo-milestone">Documented US case study with real metrics building. Performance bonus tied to verified deal attribution.</div>
+          <div class="evo-milestone pending">US operator reference unlocks direct USD contracts at $1,900-2,900/month entry. Sr. growth contractor ceiling at $2,500-3,500/month -- 5-7x local.</div>
+        </div>
+        <div class="evo-insight">
+          <strong>Edge:</strong> The gold was already there -- 1.1M members, real ad spend, real transactions. None of it was visible until it was reframed. That positioning gap is the entire case.
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -488,35 +585,14 @@
         </div>
         <div class="case-insight">
           <strong>Bottleneck:</strong> GPU/compute validation experience invisible inside an informal business. No titled industry roles, ATS rejection guaranteed.<br><br>
-          <strong>Fix:</strong> Reframe client builds as field applications work. Hardware-first narrative. Full-time FAS offer in under 12 months — with 6-month performance bonus, formal FAE title review, and pay bump structured into the offer.
+          <strong>Fix:</strong> Reframe client builds as field applications work. Hardware-first narrative. Full-time FAS offer secured in under 12 months with 6-month FAE review and pay bump structured into the offer.<br><br>
+          <strong>Next:</strong> FAE review at 6 months. OEM experience and networking exposure open Sr. FAE and Solutions Architect paths at $150-180K.
         </div>
       </div>
     </div>
     <div class="case-card">
       <div class="case-header">
-        <span class="case-tag">Case 02 — Higher Ed → Corporate</span>
-        <span class="case-status live">In Progress</span>
-      </div>
-      <div class="case-body">
-        <div class="case-transform">
-          <span class="case-from">Student Affairs Admin</span>
-          <span class="arrow">→</span>
-          <span class="case-to">Recruiting Operations</span>
-        </div>
-        <div class="case-metrics">
-          <div class="metric"><span class="metric-val negative">$62K</span><span class="metric-lbl">Current Salary</span></div>
-          <div class="metric"><span class="metric-val positive">$110K+</span><span class="metric-lbl">Target</span></div>
-          <div class="metric"><span class="metric-val positive">+77%</span><span class="metric-lbl">Projected Lift</span></div>
-        </div>
-        <div class="case-insight">
-          <strong>Bottleneck:</strong> 700+ applicant pipelines, $300K budget ownership, vendor management buried under higher-ed titles.<br><br>
-          <strong>Fix:</strong> Repositioned as recruiting ops. Narrative rebuilt for corporate TA. Actively applying.
-        </div>
-      </div>
-    </div>
-    <div class="case-card">
-      <div class="case-header">
-        <span class="case-tag">Case 03 — Engineering / Scientific</span>
+        <span class="case-tag">Case 02 — Engineering / Scientific</span>
         <span class="case-status completed">Completed</span>
       </div>
       <div class="case-body">
@@ -532,7 +608,8 @@
         </div>
         <div class="case-insight">
           <strong>Bottleneck:</strong> Strong IAC energy audit experience undersold on resume. No portfolio to demonstrate hands-on technical depth to hiring managers.<br><br>
-          <strong>Fix:</strong> Resume repositioned to surface field engineering competencies. Portfolio built after seeing the same approach land interviews. Thermo Fisher FSE offer followed.
+          <strong>Fix:</strong> Resume repositioned to surface field engineering competencies. Portfolio built after seeing the same approach land interviews. Thermo Fisher FSE offer followed.<br><br>
+          <strong>Next:</strong> FSE track builds toward Sr. Field Engineer and Applications Specialist. Equipment manufacturer experience opens semiconductor and datacenter paths at $45-60/hr.
         </div>
       </div>
     </div>
@@ -617,7 +694,7 @@
 <!-- PRICING -->
 <section class="pricing" id="services">
   <div class="section-label">Services</div>
-  <h2 class="section-h2">Ready to Start <em>Jobmaxxing?</em></h2>
+  <h2 class="section-h2">Ready to Close the <em>Gap?</em></h2>
   <p class="section-sub">Pick your entry point.</p>
   <div class="pricing-grid">
     <div class="plan">
@@ -668,8 +745,8 @@
 <section class="cta-section" id="contact">
   <div class="section-label" style="justify-content:center;">Get Started</div>
   <h2 class="section-h2">What's the <em>Highest-Leverage</em> Move Right Now?</h2>
-  <p class="section-sub">You don't have a work ethic problem. You have a positioning problem. Most clients leave the first session with a dramatically different view of their options.</p>
-  <a href="mailto:hello@apexcareerstrategy.com" class="btn-primary">Book a Diagnostic</a>
+  <p class="section-sub">Most clients leave the first session with a dramatically different view of their options.</p>
+  <a href="mailto:hello@arccareerstrategy.com" class="btn-primary">Book a Diagnostic</a>
   <div class="cta-note">60-90 min · Written analysis included · No fluff</div>
 </section>
 
